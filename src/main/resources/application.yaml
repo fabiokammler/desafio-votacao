@@ -1,8 +1,9 @@
 server:
-  port: 8080
+  port: ${API_BASE_PORT:8080}
   tomcat:
     threads:
       max: 200
+  address: ${API_BASE_URL:0.0.0.0}
 
 spring:
   application:

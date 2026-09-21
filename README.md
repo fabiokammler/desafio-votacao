@@ -4,7 +4,9 @@
 
 * Java(Versão 25)
 * Spring Boot(Versão 4.1.1)
-* Banco de dados(MySQL, H2) 
+* Banco de dados(MySQL, H2)
+* Migração de banco de dados(Flyway)
+* Documentação da API(OpenAPI/SwaggerUI 3.1.0)
 
 ### Pré-requisitos
 
@@ -12,7 +14,7 @@
 * Docker & Docker Compose
 * Maven
 
-### Inicializar a aplicação
+### Como rodar a aplicação
 
 * git clone https://github.com/fabiokammler/desafio-votacao.git
 * Acessar a pasta onde foi clonado o projeto.
@@ -20,4 +22,4 @@
 
 ### Endpoints API
 
-* [Swagger](http://localhost:8080)
+* [Swagger](http://localhost:8080/swagger-ui/index.html)
