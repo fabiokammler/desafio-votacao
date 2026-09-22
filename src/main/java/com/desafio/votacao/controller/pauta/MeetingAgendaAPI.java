@@ -1,9 +1,10 @@
 package com.desafio.votacao.controller.pauta;
 
 import com.desafio.votacao.dto.pauta.request.AgendaDTO;
-import com.desafio.votacao.dto.pauta.request.SessionDTO;
+import com.desafio.votacao.dto.pauta.request.OpenSessionDTO;
+import com.desafio.votacao.dto.pauta.request.VoteDTO;
 import com.desafio.votacao.dto.pauta.response.AgendaRespDTO;
-import com.desafio.votacao.dto.pauta.response.SessionRespDTO;
+import com.desafio.votacao.dto.pauta.response.SearchResultAgendaRespDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -29,16 +30,15 @@ public interface MeetingAgendaAPI {
             @ApiResponse(responseCode = "422", description = "Ocorreu um erro de validação"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
-    ResponseEntity<?> create(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    ResponseEntity<AgendaRespDTO> create(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Informações para criar a pauta", required = true,
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = AgendaDTO.class),
-                    examples = @ExampleObject(value = "{ \"cooperativa\": \"Sicredi UniEstados\", \"assunto\": \"Aprovação orçamentária\" }")))
+                    examples = @ExampleObject(value = "{ \"titulo\": \"Orçamente 2026\", \"descricao\": \"Aprovação orçamentária de 200 reais\" }")))
             @RequestBody AgendaDTO agenda);
 
     @GetMapping(
             value= "/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces= MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(summary = "Busca uma pauta pelo seu identificador")
@@ -47,7 +47,7 @@ public interface MeetingAgendaAPI {
             @ApiResponse(responseCode = "404", description = "Sessão não encontrada"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
-    ResponseEntity<AgendaRespDTO> getById(@PathVariable final String id);
+    ResponseEntity<SearchResultAgendaRespDTO> getById(@PathVariable final Long id);
 
     @DeleteMapping(
             value= "/{id}",
@@ -60,10 +60,10 @@ public interface MeetingAgendaAPI {
             @ApiResponse(responseCode = "404", description = "Pauta não encontrada"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
-    void deleteById(@PathVariable final String id);
+    ResponseEntity<Void> deleteById(@PathVariable final Long id);
 
     @PostMapping(
-            value= "/sessao",
+            value= "/{id}/abrirSessao",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -73,21 +73,19 @@ public interface MeetingAgendaAPI {
             @ApiResponse(responseCode = "422", description = "Ocorreu um erro de validação"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
-    ResponseEntity<SessionRespDTO> openVotingSession(@RequestBody SessionDTO sessao);
+    ResponseEntity<AgendaRespDTO> openVotingSession(@PathVariable final Long id, @RequestBody OpenSessionDTO sessao);
 
-
-    @GetMapping(
-            value= "/{id}/sessao",
+    @PostMapping(
+            value= "/{id}/votos",
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces= MediaType.APPLICATION_JSON_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @Operation(summary = "Busca uma sessão pelo identificador da pauta.")
+    @Operation(summary = "Recebe o voto para uma pauta")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Sessão retornada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Sessão não encontrada"),
+            @ApiResponse(responseCode = "200", description = "Voto recebido com sucesso"),
+            @ApiResponse(responseCode = "422", description = "Ocorreu um erro de validação"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
-    ResponseEntity<SessionRespDTO> getSessionById(@PathVariable final String id);
-
+    ResponseEntity<Void> receiveVotes(@PathVariable final Long id, @RequestBody VoteDTO vote);
 
 }

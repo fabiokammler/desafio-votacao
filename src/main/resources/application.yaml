@@ -29,6 +29,6 @@ spring:
       "[hibernate.generate_statistics]": true
       "[hibernate.connection.autocommit]": false
   flyway:
-    baseline-on-migrate: false
-    enabled: false
+    baseline-on-migrate: true
+    enabled: true
 

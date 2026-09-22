@@ -1,0 +1,30 @@
+services:
+#  app:
+#    container_name: votacao_app
+#    build: .
+#    profiles: ["app"]
+#    restart: unless-stopped
+#    env_file:
+#      - .env
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - mysql
+#    networks:
+#      - votacao_network
+
+  mysql:
+    container_name: votacao_mysql
+    image: mysql:8.3
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=votacao
+      - TZ=America/Sao_Paulo
+    security_opt:
+      - seccomp:unconfined
+    ports:
+      - "3306:3306"
+    networks:
+      - votacao_network
+networks:
+  votacao_network:

@@ -1,4 +1,10 @@
 package com.desafio.votacao.dto.pauta.response;
 
-public record SessionRespDTO() {
+import java.time.LocalDateTime;
+
+public record SessionRespDTO(
+        LocalDateTime dataInicio,
+        LocalDateTime duracao,
+        String status
+) {
 }
