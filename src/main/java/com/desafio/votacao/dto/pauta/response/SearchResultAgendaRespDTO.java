@@ -3,13 +3,15 @@ package com.desafio.votacao.dto.pauta.response;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
-@JsonPropertyOrder({ "titulo", "descricao", "ativo", "votesYes", "votesNo", "duracao", "data_criacao", "data_final"})
+@JsonPropertyOrder({ "id", "titulo", "descricao",
+                     "ativo", "votesYes", "votesNo",
+                     "duracao", "data_criacao", "data_final"})
 public class SearchResultAgendaRespDTO {
+
+    Long id;
 
     @JsonAlias("title")
     String titulo;
@@ -21,10 +23,10 @@ public class SearchResultAgendaRespDTO {
     Boolean ativo;
 
     @JsonProperty("votos_sim")
-    long votesYes;
+    long votosSim;
 
     @JsonProperty("votos_nao")
-    long votesNo;
+    long votosNao;
 
     @JsonAlias("duration")
     int duracao;
@@ -34,4 +36,79 @@ public class SearchResultAgendaRespDTO {
 
     @JsonAlias("deadline")
     LocalDateTime data_final;
+
+    public SearchResultAgendaRespDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public long getVotosSim() {
+        return votosSim;
+    }
+
+    public void setVotosSim(long votosSim) {
+        this.votosSim = votosSim;
+    }
+
+    public long getVotosNao() {
+        return votosNao;
+    }
+
+    public void setVotosNao(long votosNao) {
+        this.votosNao = votosNao;
+    }
+
+    public int getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(int duracao) {
+        this.duracao = duracao;
+    }
+
+    public LocalDateTime getData_criacao() {
+        return data_criacao;
+    }
+
+    public void setData_criacao(LocalDateTime data_criacao) {
+        this.data_criacao = data_criacao;
+    }
+
+    public LocalDateTime getData_final() {
+        return data_final;
+    }
+
+    public void setData_final(LocalDateTime data_final) {
+        this.data_final = data_final;
+    }
 }

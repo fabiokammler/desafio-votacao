@@ -36,4 +36,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public final ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex) {
+        log.error("RestExceptionHandler.handleRuntimeException - [{}]", ex.getMessage(), ex);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.BAD_REQUEST.name(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
 }

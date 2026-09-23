@@ -2,8 +2,6 @@ package com.desafio.votacao.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,41 +18,30 @@ import java.util.Set;
 @DynamicUpdate
 public class AgendaEntity implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter
-    @Getter
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Setter
-    @Getter
     @Column(name = "description", length = 4000)
     private String description;
 
-    @Setter
     @Transient
     private boolean active;
 
-    @Setter
-    @Getter
     @OneToMany(mappedBy = "agenda", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<VoteEntity> votes = new HashSet<>();
 
-    @Getter
     @Column(name = "duration")
     private Long duration;
 
-    @Setter
-    @Getter
     @CreatedDate
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime createdAt;
 
-    @Setter
-    @Getter
     @Column(name = "deadline", columnDefinition = "DATETIME(6)")
     private LocalDateTime deadline;
 
@@ -64,6 +51,62 @@ public class AgendaEntity implements Serializable {
     public AgendaEntity(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<VoteEntity> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<VoteEntity> votes) {
+        this.votes = votes;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 
     public boolean isActive() {

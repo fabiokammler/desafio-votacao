@@ -1,10 +1,10 @@
 package com.desafio.votacao.controller.pauta;
 
+import com.desafio.votacao.config.ApplicationProperties;
 import com.desafio.votacao.dto.pauta.request.AgendaDTO;
 import com.desafio.votacao.dto.pauta.request.OpenSessionDTO;
 import com.desafio.votacao.dto.pauta.request.VoteDTO;
-import com.desafio.votacao.dto.pauta.response.AgendaRespDTO;
-import com.desafio.votacao.dto.pauta.response.SearchResultAgendaRespDTO;
+import com.desafio.votacao.dto.pauta.response.*;
 import com.desafio.votacao.entities.AgendaEntity;
 import com.desafio.votacao.service.pauta.AgendaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,16 +12,92 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 
 @RestController
 public class MeetingAgendaController implements MeetingAgendaAPI {
 
     private final AgendaService agendaService;
     private final ObjectMapper objectMapper;
+    private final ApplicationProperties applicationProperties;
 
-    public MeetingAgendaController(AgendaService agendaService, ObjectMapper objectMapper) {
+    public MeetingAgendaController(AgendaService agendaService,
+                                   ObjectMapper objectMapper,
+                                   ApplicationProperties applicationProperties) {
+
         this.agendaService = agendaService;
         this.objectMapper = objectMapper;
+        this.applicationProperties = applicationProperties;
+    }
+
+    @Override
+    public ResponseEntity<ScreenPayload> getAgendaRegistrationScreen() {
+
+        FormComponent.Props props = new FormComponent.Props("Cadastrar Nova Pauta");
+
+        List<FormComponent.FieldComponent> fields = List.of(
+                new FormComponent.FieldComponent("titulo", "TEXTO", "Título da Pauta", Boolean.TRUE),
+                new FormComponent.FieldComponent("descricao", "TEXTO_LONGO", "Descrição", Boolean.TRUE)
+        );
+
+        List<FormComponent.ButtonComponent> buttons = List.of(
+                new FormComponent.ButtonComponent("Salvar", applicationProperties.getCadastrar(), "POST")
+        );
+
+        FormComponent formComponent = new FormComponent(props, fields, buttons);
+
+        ScreenPayload agendaRegistrationScreen = new ScreenPayload(
+                "TELA_CADASTRO_PAUTA",
+                List.of(formComponent)
+        );
+
+        return ResponseEntity.ok(agendaRegistrationScreen);
+    }
+
+    @Override
+    public ResponseEntity<ScreenPayload> getVotingSessionOpeningScreen() {
+
+        //Precisa buscas informações da pauta
+        FormComponent.Props props = new FormComponent.Props("Abrir Sessão de Votação");
+
+        List<FormComponent.FieldComponent> fields = List.of(
+                new FormComponent.FieldComponent("tempoMinutos", "NUMERICO",
+                        "Tempo de Sessão (minutos) - 1min default", Boolean.TRUE)
+        );
+
+        List<FormComponent.ButtonComponent> buttons = List.of(
+                new FormComponent.ButtonComponent("Iniciar Votação", applicationProperties.getSessao(), "POST")
+        );
+
+        FormComponent formComponent = new FormComponent(props, fields, buttons);
+
+        ScreenPayload votingSessionScreen = new ScreenPayload(
+                "TELA_SESSAO_VOTACAO",
+                List.of(formComponent)
+        );
+
+        return ResponseEntity.ok(votingSessionScreen);
+    }
+
+    @Override
+    public ResponseEntity<ScreenPayload> getVotingScreen() {
+
+        //Precisa buscas informações da pauta
+        SelectionComponent.Props props = new SelectionComponent.Props("Abrir Sessão de Votação",
+                "Descricao da pauta");
+
+        List<SelectionComponent.OptionComponent> options = List.of(
+                new SelectionComponent.OptionComponent("Sim", applicationProperties.getVoto(),"{}")
+        );
+
+        SelectionComponent selectionComponent = new SelectionComponent(props, options);
+
+        ScreenPayload votingScreen = new ScreenPayload(
+                "TELA_VOTACAO",
+                List.of(selectionComponent)
+        );
+
+        return ResponseEntity.ok(votingScreen);
     }
 
     @Override
@@ -54,5 +130,4 @@ public class MeetingAgendaController implements MeetingAgendaAPI {
         agendaService.receiveVotes(id, vote);
         return ResponseEntity.noContent().build();
     }
-
 }

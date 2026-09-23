@@ -4,6 +4,7 @@ import com.desafio.votacao.dto.pauta.request.AgendaDTO;
 import com.desafio.votacao.dto.pauta.request.OpenSessionDTO;
 import com.desafio.votacao.dto.pauta.request.VoteDTO;
 import com.desafio.votacao.dto.pauta.response.AgendaRespDTO;
+import com.desafio.votacao.dto.pauta.response.ScreenPayload;
 import com.desafio.votacao.dto.pauta.response.SearchResultAgendaRespDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,8 +18,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value= "/v1/pautas")
-@Tag(name="Pautas", description="API para gerenciar e buscar pautas")
+@Tag(name="Pautas", description="API para gerenciar pautas")
 public interface MeetingAgendaAPI {
+
+    @GetMapping(
+            value= "/tela-cadastro",
+            produces= MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Envia informações da tela de cadastro")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retornou informações com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Informação não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Erro no servidor")
+    })
+    ResponseEntity<ScreenPayload> getAgendaRegistrationScreen();
+
+    @GetMapping(
+            value= "/tela-sessao",
+            produces= MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Envia informações da tela de abertura de sessão")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retornou informações com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Informação não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Erro no servidor")
+    })
+    ResponseEntity<ScreenPayload> getVotingSessionOpeningScreen();
+
+    @GetMapping(
+            value= "/tela-votar",
+            produces= MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Envia informações da tela para escolher voto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retornou informações com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Informação não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Erro no servidor")
+    })
+    ResponseEntity<ScreenPayload> getVotingScreen();
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -43,8 +80,8 @@ public interface MeetingAgendaAPI {
     )
     @Operation(summary = "Busca uma pauta pelo seu identificador")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Sessão retornada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Sessão não encontrada"),
+            @ApiResponse(responseCode = "200", description = "Pauta retornada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Pauta não encontrada"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
     ResponseEntity<SearchResultAgendaRespDTO> getById(@PathVariable final Long id);

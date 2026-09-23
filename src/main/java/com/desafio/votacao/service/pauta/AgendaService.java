@@ -46,11 +46,10 @@ public class AgendaService implements IAgendaService {
         long votesYes = voteRepository.countByAgendaAndVoteValue(agendaEntity, Boolean.TRUE);
         long votesNo = voteRepository.countByAgendaAndVoteValue(agendaEntity, Boolean.FALSE);
 
-        searchResultAgendaRespDTO.setVotesYes(votesYes);
-        searchResultAgendaRespDTO.setVotesNo(votesNo);
+        searchResultAgendaRespDTO.setVotosSim(votesYes);
+        searchResultAgendaRespDTO.setVotosNao(votesNo);
 
         return searchResultAgendaRespDTO;
-
     }
 
     @Transactional
@@ -83,15 +82,18 @@ public class AgendaService implements IAgendaService {
         AgendaEntity agendaEntity = agendaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pauta informada não encontrada"));
 
-        VoteEntity voteEntity = objectMapper.convertValue(vote, VoteEntity.class);
-        voteEntity.setAgenda(agendaEntity);
         if(agendaEntity.isActive()) {
+            VoteEntity voteEntity = objectMapper.convertValue(vote, VoteEntity.class);
+            voteEntity.setAgenda(agendaEntity);
+
             boolean hasVoted = voteRepository.existsByAgendaAndAssociate(agendaEntity, vote.associate());
             if(hasVoted) {
-                throw new RuntimeException("Já votou!!!");
+                throw new RuntimeException("Já votou!");
             }
             agendaEntity.getVotes().add(voteEntity);
             agendaRepository.save(agendaEntity);
+        } else {
+            throw new RuntimeException("Votação encerrada.");
         }
     }
 }

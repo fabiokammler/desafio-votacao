@@ -2,8 +2,6 @@ package com.desafio.votacao.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -22,20 +20,14 @@ public class VoteEntity implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
-    @Setter
     @ManyToOne
     @JoinColumn(name = "agenda_id")
     @JsonIgnore
     private AgendaEntity agenda;
 
-    @Setter
-    @Getter
     @Column(name = "associate_id", nullable = false)
     private String associate;
 
-    @Setter
-    @Getter
     @Column(name = "vote", nullable = false)
     private Boolean voteValue; // "SIM" ou "NAO"
 
@@ -44,6 +36,46 @@ public class VoteEntity implements Serializable {
     private Instant createdAt;
 
     public VoteEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AgendaEntity getAgenda() {
+        return agenda;
+    }
+
+    public void setAgenda(AgendaEntity agenda) {
+        this.agenda = agenda;
+    }
+
+    public String getAssociate() {
+        return associate;
+    }
+
+    public void setAssociate(String associate) {
+        this.associate = associate;
+    }
+
+    public Boolean getVoteValue() {
+        return voteValue;
+    }
+
+    public void setVoteValue(Boolean voteValue) {
+        this.voteValue = voteValue;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
