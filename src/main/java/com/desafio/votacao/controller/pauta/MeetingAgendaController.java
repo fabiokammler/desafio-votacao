@@ -60,7 +60,7 @@ public class MeetingAgendaController implements MeetingAgendaAPI {
         FormComponent.Props props = new FormComponent.Props("Abrir Sessão de Votação");
 
         List<FormComponent.FieldComponent> fields = List.of(
-                new FormComponent.FieldComponent("tempoMinutos", "NUMERICO",
+                new FormComponent.FieldComponent("duracao", "NUMERICO",
                         "Tempo de Sessão (minutos) - 1min default", Boolean.TRUE)
         );
 
@@ -86,6 +86,8 @@ public class MeetingAgendaController implements MeetingAgendaAPI {
 
         List<SelectionComponent.OptionComponent> options = List.of(
                 new SelectionComponent.OptionComponent("Sim", applicationProperties.getVoto(),
+                        "{}"),
+                new SelectionComponent.OptionComponent("Não", applicationProperties.getVoto(),
                         "{}")
         );
 
