@@ -7,6 +7,7 @@ import com.desafio.votacao.dto.pauta.response.AgendaRespDTO;
 import com.desafio.votacao.dto.pauta.response.SearchResultAgendaRespDTO;
 import com.desafio.votacao.entities.AgendaEntity;
 import com.desafio.votacao.entities.VoteEntity;
+import com.desafio.votacao.exception.AlreadyVoteException;
 import com.desafio.votacao.exception.ResourceNotFoundException;
 import com.desafio.votacao.repository.pauta.AgendaRepository;
 import com.desafio.votacao.repository.pauta.VoteRepository;
@@ -78,7 +79,7 @@ public class AgendaService implements IAgendaService {
 
     @Transactional
     @Override
-    public void receiveVotes(Long id, final VoteDTO vote) {
+    public boolean receiveVote(Long id, final VoteDTO vote) {
         AgendaEntity agendaEntity = agendaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pauta informada não encontrada"));
 
@@ -86,12 +87,13 @@ public class AgendaService implements IAgendaService {
             VoteEntity voteEntity = objectMapper.convertValue(vote, VoteEntity.class);
             voteEntity.setAgenda(agendaEntity);
 
-            boolean hasVoted = voteRepository.existsByAgendaAndAssociate(agendaEntity, vote.associate());
+            boolean hasVoted = voteRepository.existsByAgendaAndAssociate(agendaEntity, vote.getAssociate());
             if(hasVoted) {
-                throw new RuntimeException("Já votou!");
+                throw new AlreadyVoteException("Já votou.");
             }
             agendaEntity.getVotes().add(voteEntity);
             agendaRepository.save(agendaEntity);
+            return Boolean.TRUE;
         } else {
             throw new RuntimeException("Votação encerrada.");
         }

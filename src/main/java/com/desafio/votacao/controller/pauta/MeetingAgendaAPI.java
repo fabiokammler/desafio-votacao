@@ -64,7 +64,7 @@ public interface MeetingAgendaAPI {
     @Operation(summary = "Cria uma nova pauta")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Pauta criada com sucesso"),
-            @ApiResponse(responseCode = "422", description = "Ocorreu um erro de validação"),
+            @ApiResponse(responseCode = "400", description = "Ocorreu um erro de validação"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
     ResponseEntity<AgendaRespDTO> create(@io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -107,7 +107,7 @@ public interface MeetingAgendaAPI {
     @Operation(summary = "Abre uma sessão de votação para uma pauta")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Sessão criada com sucesso"),
-            @ApiResponse(responseCode = "422", description = "Ocorreu um erro de validação"),
+            @ApiResponse(responseCode = "400", description = "Ocorreu um erro de validação"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
     ResponseEntity<AgendaRespDTO> openVotingSession(@PathVariable final Long id, @RequestBody OpenSessionDTO sessao);
@@ -120,7 +120,8 @@ public interface MeetingAgendaAPI {
     @Operation(summary = "Recebe o voto para uma pauta")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Voto recebido com sucesso"),
-            @ApiResponse(responseCode = "422", description = "Ocorreu um erro de validação"),
+            @ApiResponse(responseCode = "400", description = "Ocorreu um erro de validação"),
+            @ApiResponse(responseCode = "409", description = "Cooperado já votou"),
             @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
     ResponseEntity<Void> receiveVotes(@PathVariable final Long id, @RequestBody VoteDTO vote);

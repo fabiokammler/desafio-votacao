@@ -57,7 +57,6 @@ public class MeetingAgendaController implements MeetingAgendaAPI {
     @Override
     public ResponseEntity<ScreenPayload> getVotingSessionOpeningScreen() {
 
-        //Precisa buscas informações da pauta
         FormComponent.Props props = new FormComponent.Props("Abrir Sessão de Votação");
 
         List<FormComponent.FieldComponent> fields = List.of(
@@ -82,12 +81,12 @@ public class MeetingAgendaController implements MeetingAgendaAPI {
     @Override
     public ResponseEntity<ScreenPayload> getVotingScreen() {
 
-        //Precisa buscas informações da pauta
         SelectionComponent.Props props = new SelectionComponent.Props("Abrir Sessão de Votação",
                 "Descricao da pauta");
 
         List<SelectionComponent.OptionComponent> options = List.of(
-                new SelectionComponent.OptionComponent("Sim", applicationProperties.getVoto(),"{}")
+                new SelectionComponent.OptionComponent("Sim", applicationProperties.getVoto(),
+                        "{}")
         );
 
         SelectionComponent selectionComponent = new SelectionComponent(props, options);
@@ -127,7 +126,7 @@ public class MeetingAgendaController implements MeetingAgendaAPI {
 
     @Override
     public ResponseEntity<Void> receiveVotes(final Long id, final VoteDTO vote) {
-        agendaService.receiveVotes(id, vote);
+        agendaService.receiveVote(id, vote);
         return ResponseEntity.noContent().build();
     }
 }

@@ -13,5 +13,5 @@ public interface IAgendaService {
     SearchResultAgendaRespDTO getById(Long id);
     void deleteById(Long id);
     AgendaRespDTO openVotingSession(Long id, final OpenSessionDTO sessao);
-    void receiveVotes(Long id, final VoteDTO vote);
+    boolean receiveVote(Long id, final VoteDTO vote);
 }

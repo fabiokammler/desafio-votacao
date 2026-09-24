@@ -1,5 +1,6 @@
 package com.desafio.votacao.controller;
 
+import com.desafio.votacao.exception.AlreadyVoteException;
 import com.desafio.votacao.exception.ExceptionResponse;
 import com.desafio.votacao.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
@@ -41,6 +42,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("RestExceptionHandler.handleRuntimeException - [{}]", ex.getMessage(), ex);
         ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.BAD_REQUEST.name(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(AlreadyVoteException.class)
+    public final ResponseEntity<Object> handleAlreadyVoteException(AlreadyVoteException ex) {
+        log.error("RestExceptionHandler.handleRuntimeException - [{}]", ex.getMessage(), ex);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.CONFLICT.name(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponse);
     }
 
 }

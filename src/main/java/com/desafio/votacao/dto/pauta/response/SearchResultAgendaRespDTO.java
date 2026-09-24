@@ -32,10 +32,12 @@ public class SearchResultAgendaRespDTO {
     int duracao;
 
     @JsonAlias("createdAt")
-    LocalDateTime data_criacao;
+    @JsonProperty("data_criacao")
+    LocalDateTime dataCriacao;
 
     @JsonAlias("deadline")
-    LocalDateTime data_final;
+    @JsonProperty("data_final")
+    LocalDateTime dataFinal;
 
     public SearchResultAgendaRespDTO() {
     }
@@ -96,19 +98,19 @@ public class SearchResultAgendaRespDTO {
         this.duracao = duracao;
     }
 
-    public LocalDateTime getData_criacao() {
-        return data_criacao;
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
     }
 
-    public void setData_criacao(LocalDateTime data_criacao) {
-        this.data_criacao = data_criacao;
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
-    public LocalDateTime getData_final() {
-        return data_final;
+    public LocalDateTime getDataFinal() {
+        return dataFinal;
     }
 
-    public void setData_final(LocalDateTime data_final) {
-        this.data_final = data_final;
+    public void setDataFinal(LocalDateTime dataFinal) {
+        this.dataFinal = dataFinal;
     }
 }
